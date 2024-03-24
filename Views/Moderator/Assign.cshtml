@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Zerohungy.DTO.EmployeeDTO>
+
+@{
+    ViewBag.Title = "View";
+    ViewBag.Name = Session["mod_name"];
+}
+
+<h2>@ViewBag.Name</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EMP_NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EMP_ID)
+        </th>
+        <th>
+            Option
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelitem => item.EMP_NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelitem => item.EMP_ID)
+            </td>
+            <td>
+                <form method="post" action="@Url.Action("Assign", "Moderator")">
+                    <input type="hidden" name="id" value="@ViewBag.ID" />
+                    <input type="hidden" name="emp_id" value="@item.EMP_ID" />
+                    <input type="hidden" name="name" value=@ViewBag.Name />
+                    <input type="submit" value="Assign" class="btn btn-outline-success" />
+                </form>
+            </td>
+        </tr>
+    }
+</table>

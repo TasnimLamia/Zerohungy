@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Zerohungy.DTO.ResturantDTO>
+
+@{
+    ViewBag.Title = "Resturant";
+    ViewBag.ID = Session["RESTID"];
+    ViewBag.num = Session["num"];
+}
+
+<h2>@ViewBag.num</h2>
+<form method="post" action="@Url.Action("Logout","Resturant")">
+    <input type="submit" name="Logout" value="Logout" class="btn btn-outline-dark" />
+</form>
+<button id="Pickup">Request Pickup</button>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="~/Scripts/request.js"></script>
+
+
+<div id="request" style="display:none">
+    <form method="post" action="@Url.Action("Resturant","Resturant")">
+        <input type="hidden" name="id" value="@ViewBag.num" />
+        <input type="text" name="Preserve_Time" placeholder="Preserve time" class="form-control" />
+        <input type="text" name="Location" placeholder="Address" class="form-control" />
+        <input type="submit" value="Submit" class="btn btn-outline-success" />
+    </form>
+</div>

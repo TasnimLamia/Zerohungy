@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Zerohungy.DTO.Food_CollectDTO>
+
+@{
+    ViewBag.Title = "MOD";
+    ViewBag.Name = Session["mod_name"];
+}
+
+
+<h2>@ViewBag.Name</h2>
+<form method="post" action="@Url.Action("Logout","Moderator")">
+    <input type="submit" name="Logout" value="Logout" class="btn btn-outline-dark" />
+</form>
+<button id="Request" class="btn btn-outline-dark">Show Request</button>
+
+<a href="@Url.Action("History","Moderator")" class="btn btn-outline-dark">Show History</a>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="~/Scripts/show.js"></script>
+
+
+
+
+<div id="getreq" style="display:none">
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.C_ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.REST_ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LOCATION)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PRESERVE_TIME)
+            </th>
+            <th>
+                Option
+            </th>
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelitem => item.C_ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => item.REST_ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => item.LOCATION)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => item.PRESERVE_TIME)
+                </td>
+                <td>
+                    <input type="hidden" name="id" value=@item.C_ID />
+                    <a href="@Url.Action("Assign","Moderator", new { id = item.C_ID })" class="btn btn-outline-success">Assign an Employee</a>
+                    <a href="@Url.Action("Decline","Moderator",new { id = item.C_ID })" class="btn btn-outline-danger">Decline</a>
+                </td>
+            </tr>
+        }
+    </table>
+
+</div>

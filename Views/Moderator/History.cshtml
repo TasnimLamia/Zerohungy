@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Zerohungy.DTO.HistoryDTO>
+
+@{
+    ViewBag.Title = "history";
+}
+
+<h2>history</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.C_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.REST_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LOCATION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PRESERVE_TIME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Approved_by)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Received_by)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Approve_Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.STATUS)
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(model => item.C_ID)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.REST_ID)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.LOCATION)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PRESERVE_TIME)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Approved_by)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Received_by)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Approve_Date)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.STATUS)
+            </td>
+        </tr>
+    }
+</table>

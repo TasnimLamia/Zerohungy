@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ZerohungryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EMP_ID" />
+          </Key>
+          <Property Name="EMP_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EMP_NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EMP_PASS" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Food_Collect">
+          <Key>
+            <PropertyRef Name="C_ID" />
+          </Key>
+          <Property Name="C_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="REST_ID" Type="int" />
+          <Property Name="PRESERVE_TIME" Type="varchar" MaxLength="50" />
+          <Property Name="LOCATION" Type="varchar" MaxLength="50" />
+          <Property Name="STATUS" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="History">
+          <Key>
+            <PropertyRef Name="Serial_no" />
+          </Key>
+          <Property Name="Serial_no" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="C_ID" Type="int" />
+          <Property Name="REST_ID" Type="int" />
+          <Property Name="PRESERVE_TIME" Type="varchar" MaxLength="50" />
+          <Property Name="LOCATION" Type="varchar" MaxLength="50" />
+          <Property Name="Approved_by" Type="int" />
+          <Property Name="Received_by" Type="int" />
+          <Property Name="Approve_Date" Type="date" />
+          <Property Name="STATUS" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Moderator">
+          <Key>
+            <PropertyRef Name="M_ID" />
+          </Key>
+          <Property Name="M_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="M_PASS" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="M_NAME" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Resturant">
+          <Key>
+            <PropertyRef Name="RESTID" />
+          </Key>
+          <Property Name="RESTID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RESTNAME" Type="varchar" MaxLength="50" />
+          <Property Name="REST_CONTACT" Type="varchar" MaxLength="50" />
+          <Property Name="REST_PASS" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Food_Collect_Resturant">
+          <End Role="Resturant" Type="Self.Resturant" Multiplicity="0..1" />
+          <End Role="Food_Collect" Type="Self.Food_Collect" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resturant">
+              <PropertyRef Name="RESTID" />
+            </Principal>
+            <Dependent Role="Food_Collect">
+              <PropertyRef Name="REST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EMP_ID" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="Received_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_Food_Collect">
+          <End Role="Resturant" Type="Self.Resturant" Multiplicity="0..1" />
+          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resturant">
+              <PropertyRef Name="RESTID" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="REST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_Moderator">
+          <End Role="Moderator" Type="Self.Moderator" Multiplicity="0..1" />
+          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moderator">
+              <PropertyRef Name="M_ID" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="Received_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_Resturant">
+          <End Role="Resturant" Type="Self.Resturant" Multiplicity="0..1" />
+          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resturant">
+              <PropertyRef Name="RESTID" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="REST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ZerohungryModelStoreContainer">
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Food_Collect" EntityType="Self.Food_Collect" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="History" EntityType="Self.History" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Moderator" EntityType="Self.Moderator" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Resturant" EntityType="Self.Resturant" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Food_Collect_Resturant" Association="Self.FK_Food_Collect_Resturant">
+            <End Role="Resturant" EntitySet="Resturant" />
+            <End Role="Food_Collect" EntitySet="Food_Collect" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_Employee" Association="Self.FK_History_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="History" EntitySet="History" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_Food_Collect" Association="Self.FK_History_Food_Collect">
+            <End Role="Resturant" EntitySet="Resturant" />
+            <End Role="History" EntitySet="History" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_Moderator" Association="Self.FK_History_Moderator">
+            <End Role="Moderator" EntitySet="Moderator" />
+            <End Role="History" EntitySet="History" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_Resturant" Association="Self.FK_History_Resturant">
+            <End Role="Resturant" EntitySet="Resturant" />
+            <End Role="History" EntitySet="History" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ZerohungryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EMP_ID" />
+          </Key>
+          <Property Name="EMP_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMP_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EMP_PASS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Histories" Relationship="Self.FK_History_Employee" FromRole="Employee" ToRole="History" />
+        </EntityType>
+        <EntityType Name="Food_Collect">
+          <Key>
+            <PropertyRef Name="C_ID" />
+          </Key>
+          <Property Name="C_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="REST_ID" Type="Int32" />
+          <Property Name="PRESERVE_TIME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="STATUS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Resturant" Relationship="Self.FK_Food_Collect_Resturant" FromRole="Food_Collect" ToRole="Resturant" />
+        </EntityType>
+        <EntityType Name="History">
+          <Key>
+            <PropertyRef Name="Serial_no" />
+          </Key>
+          <Property Name="Serial_no" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="C_ID" Type="Int32" />
+          <Property Name="REST_ID" Type="Int32" />
+          <Property Name="PRESERVE_TIME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Approved_by" Type="Int32" />
+          <Property Name="Received_by" Type="Int32" />
+          <Property Name="Approve_Date" Type="DateTime" Precision="0" />
+          <Property Name="STATUS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_History_Employee" FromRole="History" ToRole="Employee" />
+          <NavigationProperty Name="Resturant" Relationship="Self.FK_History_Food_Collect" FromRole="History" ToRole="Resturant" />
+          <NavigationProperty Name="Moderator" Relationship="Self.FK_History_Moderator" FromRole="History" ToRole="Moderator" />
+          <NavigationProperty Name="Resturant1" Relationship="Self.FK_History_Resturant" FromRole="History" ToRole="Resturant" />
+        </EntityType>
+        <EntityType Name="Moderator">
+          <Key>
+            <PropertyRef Name="M_ID" />
+          </Key>
+          <Property Name="M_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="M_PASS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="M_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Histories" Relationship="Self.FK_History_Moderator" FromRole="Moderator" ToRole="History" />
+        </EntityType>
+        <EntityType Name="Resturant">
+          <Key>
+            <PropertyRef Name="RESTID" />
+          </Key>
+          <Property Name="RESTID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RESTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="REST_CONTACT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="REST_PASS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Food_Collect" Relationship="Self.FK_Food_Collect_Resturant" FromRole="Resturant" ToRole="Food_Collect" />
+          <NavigationProperty Name="Histories" Relationship="Self.FK_History_Food_Collect" FromRole="Resturant" ToRole="History" />
+          <NavigationProperty Name="Histories1" Relationship="Self.FK_History_Resturant" FromRole="Resturant" ToRole="History" />
+        </EntityType>
+        <Association Name="FK_History_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EMP_ID" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="Received_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Food_Collect_Resturant">
+          <End Role="Resturant" Type="Self.Resturant" Multiplicity="0..1" />
+          <End Role="Food_Collect" Type="Self.Food_Collect" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resturant">
+              <PropertyRef Name="RESTID" />
+            </Principal>
+            <Dependent Role="Food_Collect">
+              <PropertyRef Name="REST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_Food_Collect">
+          <End Role="Resturant" Type="Self.Resturant" Multiplicity="0..1" />
+          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resturant">
+              <PropertyRef Name="RESTID" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="REST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_Moderator">
+          <End Role="Moderator" Type="Self.Moderator" Multiplicity="0..1" />
+          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moderator">
+              <PropertyRef Name="M_ID" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="Received_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_Resturant">
+          <End Role="Resturant" Type="Self.Resturant" Multiplicity="0..1" />
+          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resturant">
+              <PropertyRef Name="RESTID" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="REST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ZerohungryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="Food_Collect" EntityType="Self.Food_Collect" />
+          <EntitySet Name="Histories" EntityType="Self.History" />
+          <EntitySet Name="Moderators" EntityType="Self.Moderator" />
+          <EntitySet Name="Resturants" EntityType="Self.Resturant" />
+          <AssociationSet Name="FK_History_Employee" Association="Self.FK_History_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="History" EntitySet="Histories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Food_Collect_Resturant" Association="Self.FK_Food_Collect_Resturant">
+            <End Role="Resturant" EntitySet="Resturants" />
+            <End Role="Food_Collect" EntitySet="Food_Collect" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_Food_Collect" Association="Self.FK_History_Food_Collect">
+            <End Role="Resturant" EntitySet="Resturants" />
+            <End Role="History" EntitySet="Histories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_Moderator" Association="Self.FK_History_Moderator">
+            <End Role="Moderator" EntitySet="Moderators" />
+            <End Role="History" EntitySet="Histories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_Resturant" Association="Self.FK_History_Resturant">
+            <End Role="Resturant" EntitySet="Resturants" />
+            <End Role="History" EntitySet="Histories" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ZerohungryModelStoreContainer" CdmEntityContainer="ZerohungryEntities">
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="ZerohungryModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="EMP_ID" ColumnName="EMP_ID" />
+                <ScalarProperty Name="EMP_NAME" ColumnName="EMP_NAME" />
+                <ScalarProperty Name="EMP_PASS" ColumnName="EMP_PASS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Food_Collect">
+            <EntityTypeMapping TypeName="ZerohungryModel.Food_Collect">
+              <MappingFragment StoreEntitySet="Food_Collect">
+                <ScalarProperty Name="C_ID" ColumnName="C_ID" />
+                <ScalarProperty Name="REST_ID" ColumnName="REST_ID" />
+                <ScalarProperty Name="PRESERVE_TIME" ColumnName="PRESERVE_TIME" />
+                <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Histories">
+            <EntityTypeMapping TypeName="ZerohungryModel.History">
+              <MappingFragment StoreEntitySet="History">
+                <ScalarProperty Name="Serial_no" ColumnName="Serial_no" />
+                <ScalarProperty Name="C_ID" ColumnName="C_ID" />
+                <ScalarProperty Name="REST_ID" ColumnName="REST_ID" />
+                <ScalarProperty Name="PRESERVE_TIME" ColumnName="PRESERVE_TIME" />
+                <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
+                <ScalarProperty Name="Approved_by" ColumnName="Approved_by" />
+                <ScalarProperty Name="Received_by" ColumnName="Received_by" />
+                <ScalarProperty Name="Approve_Date" ColumnName="Approve_Date" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Moderators">
+            <EntityTypeMapping TypeName="ZerohungryModel.Moderator">
+              <MappingFragment StoreEntitySet="Moderator">
+                <ScalarProperty Name="M_ID" ColumnName="M_ID" />
+                <ScalarProperty Name="M_PASS" ColumnName="M_PASS" />
+                <ScalarProperty Name="M_NAME" ColumnName="M_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Resturants">
+            <EntityTypeMapping TypeName="ZerohungryModel.Resturant">
+              <MappingFragment StoreEntitySet="Resturant">
+                <ScalarProperty Name="RESTID" ColumnName="RESTID" />
+                <ScalarProperty Name="RESTNAME" ColumnName="RESTNAME" />
+                <ScalarProperty Name="REST_CONTACT" ColumnName="REST_CONTACT" />
+                <ScalarProperty Name="REST_PASS" ColumnName="REST_PASS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
